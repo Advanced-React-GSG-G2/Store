@@ -1,7 +1,9 @@
+import { Typography } from "@mantine/core";
+
 function App() {
   return (
     <>
-      <div>App</div>
+      <Typography>Advanced React BootCamp Pro</Typography>
     </>
   );
 }
