@@ -1,11 +1,7 @@
-import { Typography } from "@mantine/core";
+import { Products } from "./modules/Products/views";
 
 function App() {
-  return (
-    <>
-      <Typography>Advanced React BootCamp Pro</Typography>
-    </>
-  );
+  return <Products />;
 }
 
 export default App;
