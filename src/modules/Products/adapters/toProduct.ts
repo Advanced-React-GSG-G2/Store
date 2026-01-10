@@ -8,6 +8,7 @@ export const toProduct = (dto: ProductDto): Product => ({
   name: dto.title,
   price: dto.price,
   image: dto.thumbnail,
+  category: dto.category,
   availabilityStatus:
     dto.stock === 0
       ? "Out of Stock"
