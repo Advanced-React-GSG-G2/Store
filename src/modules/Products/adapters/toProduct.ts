@@ -1,5 +1,3 @@
-// adapters/toProduct.ts
-
 import type { ProductDto } from "../dto/Product";
 import type { Product } from "../entities/Product";
 

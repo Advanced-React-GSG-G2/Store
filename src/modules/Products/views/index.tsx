@@ -1,103 +1,127 @@
-import {
-  Badge,
-  Button,
-  Card,
-  Grid,
-  Group,
-  Image,
-  Stack,
-  Text,
-  Title,
-  Box,
-} from "@mantine/core";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
 import type { Product } from "../entities/Product";
+import { Card, CardContent, CardHeader } from "../../../components/ui/card";
+import { Badge } from "../../../components/ui/badge";
+import { Button } from "../../../components/ui/button";
+import { Star, ShoppingCart, Package } from "lucide-react";
 
 export const Products = () => {
   const { products } = useGetAllProducts();
 
+  const getStockVariant = (status: string) => {
+    if (status === "In Stock") return "default";
+    if (status === "Low Stock") return "secondary";
+    return "destructive";
+  };
+
+  const getRatingStars = (label: string) => {
+    if (label === "Excellent") return 5;
+    if (label === "Good") return 3;
+    return 1;
+  };
+
+  const getRatingColor = (label: string) => {
+    if (label === "Excellent") return "text-amber-400";
+    if (label === "Good") return "text-amber-300";
+    return "text-gray-400";
+  };
+
   return (
-    <Box py={32} px={{ base: 16, md: 32 }}>
-      <Title style={{ textAlign: "center", marginBottom: 32 }}>
-        Our Products
-      </Title>
+    <div className="min-h-screen py-12 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-12 text-center">
+          <h1 className="text-5xl font-bold mb-3 bg-linear-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">
+            Our Products
+          </h1>
+          <p className="text-gray-600 text-lg">
+            Discover our amazing collection
+          </p>
+        </div>
 
-      <Grid gutter="lg">
-        {products.map((product: Product) => (
-          <Grid.Col key={product.id} span={{ base: 12, sm: 6, md: 4 }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {products.map((product: Product) => (
             <Card
-              shadow="sm"
-              radius="md"
-              withBorder
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-                transition: "transform 0.2s, box-shadow 0.2s",
-                cursor: "pointer",
-              }}
-              onMouseEnter={(e) => {
-                const card = e.currentTarget;
-                card.style.transform = "translateY(-5px)";
-                card.style.boxShadow = "0 10px 20px rgba(0, 0, 0, 0.15)";
-              }}
-              onMouseLeave={(e) => {
-                const card = e.currentTarget;
-                card.style.transform = "translateY(0)";
-                card.style.boxShadow = "";
-              }}
+              key={product.id}
+              className="group relative flex flex-col overflow-hidden border-2 border-gray-200 hover:border-gray-400 hover:shadow-2xl transition-all duration-300 bg-white"
             >
-              <Card.Section>
-                <Image
-                  src={product.image}
-                  height={180}
-                  fit="contain"
-                  alt={product.name}
-                />
-              </Card.Section>
-
-              <Stack gap="md" justify="space-between" style={{ flex: 1, padding: 16 }}>
-                <Group grow={false} gap="md">
-                  <Text fw={600} lineClamp={1}>
-                    {product.name}
-                  </Text>
-
-                  <Badge
-                    color={
-                      product.availabilityStatus === "In Stock"
-                        ? "green"
-                        : product.availabilityStatus === "Low Stock"
-                        ? "yellow"
-                        : "red"
-                    }
-                    variant="light"
-                  >
-                    {product.availabilityStatus}
-                  </Badge>
-                </Group>
-
-                <Text size="sm" color="dimmed" lineClamp={1}>
-                  {product.category}
-                </Text>
-
-                <Text fw={700} size="lg">
-                  ${product.price}
-                </Text>
-
-                <Button
-                  fullWidth
-                  radius="md"
-                  disabled={product.availabilityStatus === "Out of Stock"}
+              <div className="absolute top-4 right-4 z-10">
+                <Badge
+                  variant={getStockVariant(product.availabilityStatus)}
+                  className="shadow-md font-medium px-3 py-1"
                 >
-                  {product.availabilityStatus === "Out of Stock"
-                    ? "Unavailable"
-                    : "Order Now"}
-                </Button>
-              </Stack>
+                  <Package className="size-3 mr-1" />
+                  {product.availabilityStatus}
+                </Badge>
+              </div>
+
+              <CardHeader className="p-0">
+                <div className="relative overflow-hidden from-gray-50 to-white">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-40 object-contain p-4 group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+              </CardHeader>
+
+              <CardContent className="flex flex-col flex-1 p-4">
+                <div className="mb-2">
+                  <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    {product.category}
+                  </span>
+                </div>
+
+                <h3 className="font-bold text-xl line-clamp-2 mb-4 min-h-14 text-gray-900 group-hover:text-gray-700 transition-colors">
+                  {product.name}
+                </h3>
+
+                <div className="mb-5">
+                  <div className="flex items-center gap-1 mb-1">
+                    {[...Array(5)].map((_, index) => (
+                      <Star
+                        key={index}
+                        className={`size-5 ${
+                          index < getRatingStars(product.ratingLabel)
+                            ? getRatingColor(product.ratingLabel) +
+                              " fill-current"
+                            : "text-gray-300"
+                        } transition-colors`}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div className="mt-auto pt-4 border-t border-gray-100">
+                  <div className="flex items-end justify-between mb-4">
+                    <div>
+                      <p className="text-sm text-gray-500 mb-1">Price</p>
+                      <p className="text-3xl font-bold text-gray-900">
+                        ${product.price.toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+
+                  <Button
+                    className="w-full h-12 text-base font-semibold transition-all duration-300 bg-blue-400"
+                    disabled={product.availabilityStatus === "Out of Stock"}
+                    variant={
+                      product.availabilityStatus === "Out of Stock"
+                        ? "outline"
+                        : "default"
+                    }
+                  >
+                    <ShoppingCart className="size-5 mr-2" />
+                    {product.availabilityStatus === "Out of Stock"
+                      ? "Out of Stock"
+                      : "Add to Cart"}
+                  </Button>
+                </div>
+              </CardContent>
             </Card>
-          </Grid.Col>
-        ))}
-      </Grid>
-    </Box>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
