@@ -1,12 +1,29 @@
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
-import type { Product } from "../entities/Product";
+import { useDeleteProduct } from "../hooks/useDeleteProduct";
 import { Card, CardContent, CardHeader } from "../../../components/ui/card";
 import { Badge } from "../../../components/ui/badge";
 import { Button } from "../../../components/ui/button";
 import { Star, ShoppingCart, Package } from "lucide-react";
 
 export const Products = () => {
-  const { products } = useGetAllProducts();
+  const { isEmpty ,products } = useGetAllProducts();
+  const { deleteProduct, isSuccess } = useDeleteProduct({
+    onSuccess: () => {
+      console.log("Product deleted successfully");
+    },
+  });
+
+  if (isSuccess) {
+    console.log("Delete operation was successful");
+  }
+
+  if (isEmpty) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-gray-500 text-lg">No products available.</p>
+      </div>
+    );
+  }
 
   const getStockVariant = (status: string) => {
     if (status === "In Stock") return "default";
@@ -39,7 +56,7 @@ export const Products = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product: Product) => (
+          {products.map((product) => (
             <Card
               key={product.id}
               className="group relative flex flex-col overflow-hidden border-2 border-gray-200 hover:border-gray-400 hover:shadow-2xl transition-all duration-300 bg-white"
@@ -115,6 +132,12 @@ export const Products = () => {
                     {product.availabilityStatus === "Out of Stock"
                       ? "Out of Stock"
                       : "Add to Cart"}
+                  </Button>
+                  <Button
+                    className="w-full h-12 text-base font-semibold transition-all duration-300 bg-red-400 mt-3 text-white"
+                    onClick={() => deleteProduct(product.id)}
+                  >
+                    Delete
                   </Button>
                 </div>
               </CardContent>
