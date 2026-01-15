@@ -5,6 +5,7 @@ export const toProduct = (dto: ProductDto): Product => ({
   id: dto.id,
   name: dto.title,
   price: dto.price,
+  discountPercentage: dto.discountPercentage,
   image: dto.thumbnail,
   category: dto.category,
   availabilityStatus:

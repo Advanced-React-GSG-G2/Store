@@ -5,21 +5,25 @@ const Get_ALL_PRODUCTS_QUERY_KEY = "products";
 
 export const useGetAllProducts = () => {
   const { getAll } = useProducts();
-  const {
-    data: products = [],
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: [Get_ALL_PRODUCTS_QUERY_KEY],
+  const { data, error, isLoading } = useQuery<Product[]>({
+    queryKey: ["products"],
     queryFn: getAll,
     staleTime: 1000 * 60,
   });
+  
+  const allProducts = data ?? [];
+  const products = useMemo(
+    () => applyProductFilters(allProducts, filters),
+    [allProducts, filters],
+  );
 
   return {
     products,
-    isEmpty: error,
+    allProducts,
+    error,
     isLoading,
   };
+
 };
 
 useGetAllProducts.queryKey = Get_ALL_PRODUCTS_QUERY_KEY;
