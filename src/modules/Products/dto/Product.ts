@@ -1,5 +1,5 @@
 export type ProductDto = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   category: string;
