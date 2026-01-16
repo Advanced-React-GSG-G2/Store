@@ -1,12 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { useProducts } from "..";
-
+import {applyProductFilters} from "../utils/applyProductFilters"
 const Get_ALL_PRODUCTS_QUERY_KEY = "products";
+import {useMemo} from "react"
 
-export const useGetAllProducts = () => {
+export const useGetAllProducts = (filters?: any) => {
   const { getAll } = useProducts();
   const { data, error, isLoading } = useQuery<Product[]>({
-    queryKey: ["products"],
+    queryKey: [Get_ALL_PRODUCTS_QUERY_KEY],
     queryFn: getAll,
     staleTime: 1000 * 60,
   });

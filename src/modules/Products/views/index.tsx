@@ -1,21 +1,15 @@
 import { useMemo, useState } from "react";
 import { useGetAllProducts } from "../hooks/useGetAllProducts";
-
-import type {
-  AvailabilityStatus,
-  Product,
-  RatingLabel,
-} from "../entities/Product";
-
 import { useDeleteProduct } from "../hooks/useDeleteProduct";
 
-import { Card, CardContent, CardHeader } from "../../../components/ui/card";
+import { Card, CardHeader, CardContent } from "../../../components/ui/card";
 import { Badge } from "../../../components/ui/badge";
 import { Button } from "../../../components/ui/button";
 import { Star, ShoppingCart, Package } from "lucide-react";
 
-export const Products = () => {
+import type { AvailabilityStatus, RatingLabel } from "../entities/Product";
 
+export const Products = () => {
   const [category, setCategory] = useState("all");
   const [availabilityStatus, setAvailabilityStatus] = useState<
     AvailabilityStatus | "all"
@@ -47,34 +41,18 @@ export const Products = () => {
 
   const { products, allProducts, error, isLoading } =
     useGetAllProducts(filters);
-  const categories = useMemo(() => {
-    return Array.from(new Set(allProducts.map((product) => product.category)))
-      .sort((a, b) => a.localeCompare(b))
-      .map((categoryName) => ({
-        value: categoryName,
-        label: categoryName,
-      }));
-  }, [allProducts]);
 
-  const { isEmpty ,products } = useGetAllProducts();
-  const { deleteProduct, isSuccess } = useDeleteProduct({
-    onSuccess: () => {
-      console.log("Product deleted successfully");
-    },
+  const categories = useMemo(
+    () =>
+      Array.from(new Set(allProducts.map((p) => p.category)))
+        .sort((a, b) => a.localeCompare(b))
+        .map((value) => ({ value, label: value })),
+    [allProducts],
+  );
+
+  const { deleteProduct } = useDeleteProduct({
+    onSuccess: () => console.log("Product deleted successfully"),
   });
-
-  if (isSuccess) {
-    console.log("Delete operation was successful");
-  }
-
-  if (isEmpty) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500 text-lg">No products available.</p>
-      </div>
-    );
-  }
-
 
   const getStockVariant = (status: string) => {
     if (status === "In Stock") return "default";
@@ -98,7 +76,7 @@ export const Products = () => {
     <div className="min-h-screen py-12 px-4 md:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-12 text-center">
-          <h1 className="text-5xl font-bold mb-3 bg-linear-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-3 text-gray-900">
             Our Products
           </h1>
           <p className="text-gray-600 text-lg">
@@ -106,14 +84,14 @@ export const Products = () => {
           </p>
         </div>
 
-        <div className="mb-10 rounded-2xl border border-gray-200 bg-white/90 p-6 shadow-sm">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <label className="flex flex-col gap-2 text-sm font-medium text-gray-600">
+        <div className="flex flex-col md:flex-row gap-8">
+          <aside className="w-full md:w-64 h-screen sticky top-0 rounded-2xl border border-gray-200 bg-white/90 p-6 shadow-sm overflow-y-auto flex-shrink-0">
+            <label className="flex flex-col gap-2 text-sm font-medium text-gray-600 mb-4">
               Category
               <select
                 className="h-11 rounded-lg border border-gray-200 bg-white px-3 text-base text-gray-800 shadow-sm focus:border-gray-400 focus:outline-none"
                 value={category}
-                onChange={(event) => setCategory(event.target.value)}
+                onChange={(e) => setCategory(e.target.value)}
               >
                 <option value="all">All categories</option>
                 {categories.map((option) => (
@@ -124,14 +102,14 @@ export const Products = () => {
               </select>
             </label>
 
-            <label className="flex flex-col gap-2 text-sm font-medium text-gray-600">
+            <label className="flex flex-col gap-2 text-sm font-medium text-gray-600 mb-4">
               Availability
               <select
                 className="h-11 rounded-lg border border-gray-200 bg-white px-3 text-base text-gray-800 shadow-sm focus:border-gray-400 focus:outline-none"
                 value={availabilityStatus}
-                onChange={(event) =>
+                onChange={(e) =>
                   setAvailabilityStatus(
-                    event.target.value as AvailabilityStatus | "all",
+                    e.target.value as AvailabilityStatus | "all",
                   )
                 }
               >
@@ -142,13 +120,13 @@ export const Products = () => {
               </select>
             </label>
 
-            <label className="flex flex-col gap-2 text-sm font-medium text-gray-600">
+            <label className="flex flex-col gap-2 text-sm font-medium text-gray-600 mb-4">
               Rating
               <select
                 className="h-11 rounded-lg border border-gray-200 bg-white px-3 text-base text-gray-800 shadow-sm focus:border-gray-400 focus:outline-none"
                 value={ratingLabel}
-                onChange={(event) =>
-                  setRatingLabel(event.target.value as RatingLabel | "all")
+                onChange={(e) =>
+                  setRatingLabel(e.target.value as RatingLabel | "all")
                 }
               >
                 <option value="all">All ratings</option>
@@ -158,7 +136,7 @@ export const Products = () => {
               </select>
             </label>
 
-            <label className="flex flex-col gap-2 text-sm font-medium text-gray-600">
+            <label className="flex flex-col gap-2 text-sm font-medium text-gray-600 mb-4">
               Price range
               <div className="flex items-center gap-2">
                 <input
@@ -167,7 +145,7 @@ export const Products = () => {
                   min={0}
                   placeholder="Min"
                   value={minPrice}
-                  onChange={(event) => setMinPrice(event.target.value)}
+                  onChange={(e) => setMinPrice(e.target.value)}
                 />
                 <input
                   className="h-11 w-full rounded-lg border border-gray-200 px-3 text-base text-gray-800 shadow-sm focus:border-gray-400 focus:outline-none"
@@ -175,26 +153,24 @@ export const Products = () => {
                   min={0}
                   placeholder="Max"
                   value={maxPrice}
-                  onChange={(event) => setMaxPrice(event.target.value)}
+                  onChange={(e) => setMaxPrice(e.target.value)}
                 />
               </div>
             </label>
-          </div>
 
-          <div className="mt-5 flex flex-wrap items-center justify-between gap-3 text-sm text-gray-600">
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-2 text-sm text-gray-600 mb-4">
               <input
                 type="checkbox"
                 className="size-4 accent-gray-700"
                 checked={discountedOnly}
-                onChange={(event) => setDiscountedOnly(event.target.checked)}
+                onChange={(e) => setDiscountedOnly(e.target.checked)}
               />
               Discounted only
             </label>
 
             <button
               type="button"
-              className="rounded-full border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-gray-400 hover:text-gray-900"
+              className="w-full rounded-full border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 transition hover:border-gray-400 hover:text-gray-900"
               onClick={() => {
                 setCategory("all");
                 setAvailabilityStatus("all");
@@ -206,109 +182,79 @@ export const Products = () => {
             >
               Reset filters
             </button>
-          </div>
-        </div>
+          </aside>
 
-        {isLoading && (
-          <div className="mb-6 text-center text-gray-500">
-            Loading products...
-          </div>
-        )}
+          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {isLoading && <p className="text-gray-500">Loading products...</p>}
+            {error && <p className="text-red-500">Failed to load products</p>}
 
-        {error && (
-          <div className="mb-6 text-center text-red-500">
-            Failed to load products. Please try again.
-          </div>
-        )}
+            {products.map((product) => (
+              <Card
+                key={product.id}
+                className="group relative flex flex-col border border-gray-200 hover:shadow-2xl transition-all bg-white"
+              >
+                <div className="absolute top-4 right-4 z-10">
+                  <Badge variant={getStockVariant(product.availabilityStatus)}>
+                    <Package className="size-3 mr-1" />
+                    {product.availabilityStatus}
+                  </Badge>
+                </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {products.map((product) => (
-            <Card
-              key={product.id}
-              className="group relative flex flex-col overflow-hidden border-2 border-gray-200 hover:border-gray-400 hover:shadow-2xl transition-all duration-300 bg-white"
-            >
-              <div className="absolute top-4 right-4 z-10">
-                <Badge
-                  variant={getStockVariant(product.availabilityStatus)}
-                  className="shadow-md font-medium px-3 py-1"
-                >
-                  <Package className="size-3 mr-1" />
-                  {product.availabilityStatus}
-                </Badge>
-              </div>
-
-              <CardHeader className="p-0">
-                <div className="relative overflow-hidden from-gray-50 to-white">
+                <CardHeader className="p-0">
                   <img
                     src={product.image}
                     alt={product.name}
                     className="w-full h-40 object-contain p-4 group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-              </CardHeader>
+                </CardHeader>
 
-              <CardContent className="flex flex-col flex-1 p-4">
-                <div className="mb-2">
+                <CardContent className="flex flex-col flex-1 p-4">
                   <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
                     {product.category}
                   </span>
-                </div>
+                  <h3 className="font-bold text-xl mb-4">{product.name}</h3>
 
-                <h3 className="font-bold text-xl line-clamp-2 mb-4 min-h-14 text-gray-900 group-hover:text-gray-700 transition-colors">
-                  {product.name}
-                </h3>
-
-                <div className="mb-5">
                   <div className="flex items-center gap-1 mb-1">
-                    {[...Array(5)].map((_, index) => (
+                    {[...Array(5)].map((_, i) => (
                       <Star
-                        key={index}
+                        key={i}
                         className={`size-5 ${
-                          index < getRatingStars(product.ratingLabel)
+                          i < getRatingStars(product.ratingLabel)
                             ? getRatingColor(product.ratingLabel) +
                               " fill-current"
                             : "text-gray-300"
-                        } transition-colors`}
+                        }`}
                       />
                     ))}
                   </div>
-                </div>
 
-                <div className="mt-auto pt-4 border-t border-gray-100">
-                  <div className="flex items-end justify-between mb-4">
-                    <div>
-                      <p className="text-sm text-gray-500 mb-1">Price</p>
-                      <p className="text-3xl font-bold text-gray-900">
-                        ${product.price.toFixed(2)}
-                      </p>
-                    </div>
+                  <div className="mt-auto pt-4 border-t border-gray-100">
+                    <p className="text-sm text-gray-500">Price</p>
+                    <p className="text-3xl font-bold text-gray-900 mb-3">
+                      ${product.price.toFixed(2)}
+                    </p>
+
+                    <Button
+                      className="w-full h-12 mb-3"
+                      disabled={product.availabilityStatus === "Out of Stock"}
+                    >
+                      <ShoppingCart className="size-5 mr-2" />
+                      {product.availabilityStatus === "Out of Stock"
+                        ? "Out of Stock"
+                        : "Add to Cart"}
+                    </Button>
+
+                    <Button
+                      className="w-full h-12 bg-red-400 text-white"
+                      onClick={() => deleteProduct(product.id)}
+                    >
+                      Delete
+                    </Button>
                   </div>
-
-                  <Button
-                    className="w-full h-12 text-base font-semibold transition-all duration-300 bg-blue-400"
-                    disabled={product.availabilityStatus === "Out of Stock"}
-                    variant={
-                      product.availabilityStatus === "Out of Stock"
-                        ? "outline"
-                        : "default"
-                    }
-                  >
-                    <ShoppingCart className="size-5 mr-2" />
-                    {product.availabilityStatus === "Out of Stock"
-                      ? "Out of Stock"
-                      : "Add to Cart"}
-                  </Button>
-                  <Button
-                    className="w-full h-12 text-base font-semibold transition-all duration-300 bg-red-400 mt-3 text-white"
-                    onClick={() => deleteProduct(product.id)}
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
     </div>
