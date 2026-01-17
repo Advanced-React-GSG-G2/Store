@@ -1,9 +1,9 @@
 import { Star, ShoppingCart, Package } from "lucide-react";
-import { Card, CardContent, CardHeader } from "../../../components/ui/card";
-import { Badge } from "../../../components/ui/badge";
-import { Button } from "../../../components/ui/button";
-import type { Product as ProductType } from "../entities/Product";
-import { useDeleteProduct } from "../hooks/useDeleteProduct";
+import { Card, CardContent, CardHeader } from "../../../../components/ui/card";
+import { Badge } from "../../../../components/ui/badge";
+import { Button } from "../../../../components/ui/button";
+import type { Product as ProductType } from "../../entities/Product";
+import { useDeleteProduct } from "../../hooks/useDeleteProduct";
 
 type ProductProps = {
   product: ProductType;
@@ -61,17 +61,17 @@ export const Product = ({ product }: ProductProps) => {
       </CardHeader>
 
       <CardContent className="flex flex-col flex-1 p-4">
-        <div className="mb-2">
+        <div className="mb-1">
           <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
             {product.category}
           </span>
         </div>
 
-        <h3 className="font-bold text-xl line-clamp-2 mb-4 min-h-14 text-gray-900 group-hover:text-gray-700 transition-colors">
+        <h3 className="font-bold text-lg line-clamp-2 min-h-14 text-gray-900 group-hover:text-gray-700 transition-colors">
           {product.name}
         </h3>
 
-        <div className="mb-3">
+        <div>
           <div className="flex items-center gap-1 mb-1">
             {[...Array(5)].map((_, index) => (
               <Star
@@ -86,11 +86,11 @@ export const Product = ({ product }: ProductProps) => {
           </div>
         </div>
 
-        <div className="mt-auto pt-3 border-t border-gray-100">
-          <div className="flex items-end justify-between mb-4">
+        <div className="mt-auto pt-2 border-t border-gray-100">
+          <div className="flex items-end justify-between">
             <div>
               <p className="text-sm text-gray-500 mb-1">Price</p>
-              <p className="text-3xl font-bold text-gray-900">
+              <p className="text-xl font-bold text-gray-900 mb-1">
                 ${product.price.toFixed(2)}
               </p>
             </div>
