@@ -4,6 +4,7 @@ import { Badge } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
 import type { Product as ProductType } from "../../entities/Product";
 import { useDeleteProduct } from "../../hooks/useDeleteProduct";
+import {  Outlet, useNavigate } from "@tanstack/react-router";
 
 type ProductProps = {
   product: ProductType;
@@ -37,8 +38,11 @@ export const Product = ({ product }: ProductProps) => {
     return null;
   }
 
+   const navigate = useNavigate();
   return (
-    <Card className="group relative flex flex-col overflow-hidden border-2 border-gray-200 hover:border-gray-400 hover:shadow-2xl transition-all duration-300 bg-white">
+    <Card className="group relative flex flex-col overflow-hidden border-2 border-gray-200 hover:border-gray-400 hover:shadow-2xl transition-all duration-300 bg-white"
+    onClick={()=>navigate({to:'/products/$productId', params:{productId:product.id}})}>
+      <Outlet />
       <div className="absolute top-4 right-4 z-10">
         <Badge
           variant={getStockVariant(product.availabilityStatus)}

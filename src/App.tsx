@@ -1,17 +1,14 @@
-import { Footer } from "./components/Footer";
-import { Header } from "./components/Header";
-import { Products } from "./modules/Products/views";
+import { createRouter, RouterProvider } from "@tanstack/react-router";
+import { routeTree } from './routes'
 
+const router = createRouter ({ routeTree, notFoundMode: "root" })
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
 function App() {
-  return (
-    <>
-      <Header />
-      <div className="mx-10">
-        <Products />
-      </div>
-      <Footer />
-    </>
-  );
+  return<RouterProvider router={router} />
 }
 
 export default App;
