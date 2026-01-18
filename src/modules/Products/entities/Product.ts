@@ -20,4 +20,5 @@ export type Product = {
   availabilityStatus: AvailabilityStatus;
   ratingLabel: RatingLabel;
   discountPercentage: number;
+  description: string;
 };

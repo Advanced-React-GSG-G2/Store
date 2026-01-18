@@ -16,4 +16,5 @@ export const toProduct = (dto: ProductDto): Product => ({
       : "In Stock",
   ratingLabel:
     dto.rating >= 4.5 ? "Excellent" : dto.rating >= 3 ? "Good" : "Bad",
+    description: dto.description,
 });
