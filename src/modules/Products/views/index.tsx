@@ -92,10 +92,10 @@ export const Products = () => {
           onReset={handleReset}
         />
 
-        <main className="flex-1 p-4 md:p-8">
+        <main className="flex-1 p-4 md:p-8  m-8 rounded-3xl">
           <div className="mb-6 flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold">Our Products</h1>
+            <div className="flex justify-center items-center w-full ">
+              <h1 className="text-3xl font-bold ">Our Products</h1>
             </div>
 
             <Button
