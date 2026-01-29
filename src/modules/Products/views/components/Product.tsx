@@ -4,12 +4,14 @@ import { Badge } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
 import type { Product as ProductType } from "../../entities/Product";
 import { useDeleteProduct } from "../../hooks/useDeleteProduct";
+import { Outlet, useNavigate } from "@tanstack/react-router";
 
 type ProductProps = {
   product: ProductType;
 };
 
 export const Product = ({ product }: ProductProps) => {
+  const navigate = useNavigate();
   const getStockVariant = (status: string) => {
     if (status === "In Stock") return "default";
     if (status === "Low Stock") return "secondary";
@@ -39,6 +41,7 @@ export const Product = ({ product }: ProductProps) => {
 
   return (
     <Card className="group relative flex flex-col overflow-hidden border-2 border-gray-200 hover:border-gray-400 hover:shadow-2xl transition-all duration-300 bg-white">
+      <Outlet />
       <div className="absolute top-4 right-4 z-10">
         <Badge
           variant={getStockVariant(product.availabilityStatus)}
@@ -49,7 +52,15 @@ export const Product = ({ product }: ProductProps) => {
         </Badge>
       </div>
 
-      <CardHeader className="p-0">
+      <CardHeader
+        className="p-0 cursor-pointer"
+        onClick={() =>
+          navigate({
+            to: "/products/$productId",
+            params: { productId: product.id },
+          })
+        }
+      >
         <div className="relative overflow-hidden from-gray-50 to-white">
           <img
             src={product.image}
