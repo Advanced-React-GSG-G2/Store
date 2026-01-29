@@ -1,11 +1,9 @@
-
-
 import { Star, ShoppingCart, Package } from "lucide-react";
+import { Card, CardContent, CardHeader } from "../../../../components/ui/card";
 import { Badge } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
 import type { Product as ProductType } from "../../entities/Product";
 import { useDeleteProduct } from "../../hooks/useDeleteProduct";
-import { Link } from "react-router-dom";
 
 type ProductProps = {
   product: ProductType;
@@ -29,7 +27,6 @@ export const Product = ({ product }: ProductProps) => {
     if (label === "Good") return "text-amber-300";
     return "text-gray-400";
   };
-
   const { deleteProduct, isSuccess } = useDeleteProduct({
     onSuccess: () => {
       console.log("Product deleted successfully");
@@ -41,58 +38,86 @@ export const Product = ({ product }: ProductProps) => {
   }
 
   return (
-    <div className="group relative flex flex-col border-2 border-gray-200 rounded p-4 bg-white hover:border-gray-400 hover:shadow-lg transition-all duration-300">
+    <Card className="group relative flex flex-col overflow-hidden border-2 border-gray-200 hover:border-gray-400 hover:shadow-2xl transition-all duration-300 bg-white">
       <div className="absolute top-4 right-4 z-10">
-        <Badge variant={getStockVariant(product.availabilityStatus)}>
+        <Badge
+          variant={getStockVariant(product.availabilityStatus)}
+          className="shadow-md font-medium px-3 py-1"
+        >
           <Package className="size-3 mr-1" />
           {product.availabilityStatus}
         </Badge>
       </div>
 
-      <Link to={`/products/${product.id}`}>
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-40 object-contain transition-transform duration-500 group-hover:scale-110"
-        />
-      </Link>
-
-      <h3 className="mt-4 mb-2 font-bold text-lg">
-        <Link to={`/products/${product.id}`} className="text-blue-600 hover:text-blue-800 underline">
-          {product.name}
-        </Link>
-      </h3>
-
-      <div className="flex items-center gap-1 mb-2">
-        {[...Array(5)].map((_, index) => (
-          <Star
-            key={index}
-            className={`size-4 ${
-              index < getRatingStars(product.ratingLabel)
-                ? getRatingColor(product.ratingLabel) + " fill-current"
-                : "text-gray-300"
-            }`}
+      <CardHeader className="p-0">
+        <div className="relative overflow-hidden from-gray-50 to-white">
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-40 object-contain p-4 group-hover:scale-110 transition-transform duration-500"
           />
-        ))}
-      </div>
+          <div className="absolute inset-0 from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
+      </CardHeader>
 
-      <p className="text-xl font-semibold mb-2">${product.price.toFixed(2)}</p>
+      <CardContent className="flex flex-col flex-1 p-4">
+        <div className="mb-1">
+          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            {product.category}
+          </span>
+        </div>
 
-      <Button
-        className="w-full mb-2"
-        disabled={product.availabilityStatus === "Out of Stock"}
-        variant={product.availabilityStatus === "Out of Stock" ? "outline" : "default"}
-      >
-        <ShoppingCart className="size-5 mr-2" />
-        {product.availabilityStatus === "Out of Stock" ? "Out of Stock" : "Add to Cart"}
-      </Button>
+        <h3 className="font-bold text-lg line-clamp-2 min-h-14 text-gray-900 group-hover:text-gray-700 transition-colors">
+          {product.name}
+        </h3>
 
-      <Button
-        className="w-full bg-red-500 text-white"
-        onClick={() => deleteProduct(product.id)}
-      >
-        Delete
-      </Button>
-    </div>
+        <div>
+          <div className="flex items-center gap-1 mb-1">
+            {[...Array(5)].map((_, index) => (
+              <Star
+                key={index}
+                className={`size-4 ${
+                  index < getRatingStars(product.ratingLabel)
+                    ? getRatingColor(product.ratingLabel) + " fill-current"
+                    : "text-gray-300"
+                } transition-colors`}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-auto pt-2 border-t border-gray-100">
+          <div className="flex items-end justify-between">
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Price</p>
+              <p className="text-xl font-bold text-gray-900 mb-1">
+                ${product.price.toFixed(2)}
+              </p>
+            </div>
+          </div>
+
+          <Button
+            className="w-full h-12 text-base font-semibold transition-all duration-300 bg-blue-400"
+            disabled={product.availabilityStatus === "Out of Stock"}
+            variant={
+              product.availabilityStatus === "Out of Stock"
+                ? "outline"
+                : "default"
+            }
+          >
+            <ShoppingCart className="size-5 mr-2" />
+            {product.availabilityStatus === "Out of Stock"
+              ? "Out of Stock"
+              : "Add to Cart"}
+          </Button>
+          <Button
+            className="w-full h-12 text-base font-semibold transition-all duration-300 bg-red-400 mt-3 text-white"
+            onClick={() => deleteProduct(product.id)}
+          >
+            Delete
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
