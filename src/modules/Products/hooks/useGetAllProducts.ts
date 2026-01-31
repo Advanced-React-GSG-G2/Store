@@ -11,7 +11,8 @@ export const useGetAllProducts = (filters?: ProductFilters) => {
   const { data, error, isLoading } = useQuery<Product[]>({
     queryKey: [Get_ALL_PRODUCTS_QUERY_KEY],
     queryFn: getAll,
-    staleTime: 1000 * 60,
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 
   const allProducts = useMemo(() => data ?? [], [data]);

@@ -56,7 +56,7 @@ export const Sidebar = ({
       >
         <div className="flex h-full flex-col gap-4 pt-8 p-2 rounded-lg">
           <div className="flex flex-col gap-3 ">
-            <div className="space-y-3 ">
+            <div className="space-y-3 mt-7">
               <h2 className="font-bold text-2xl"> Filters</h2>
               <div className="group">
                 <label className="mb-2 block text-sm font-semibold text-gray-700  transition-colors">

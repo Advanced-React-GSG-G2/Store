@@ -1,14 +1,16 @@
 import { Star, ShoppingCart, Package } from "lucide-react";
+import { Card, CardContent, CardHeader } from "../../../../components/ui/card";
 import { Badge } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
 import type { Product as ProductType } from "../../entities/Product";
-import { Link } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 
 type ProductProps = {
   product: ProductType;
 };
 
 export const Product = ({ product }: ProductProps) => {
+  const navigate = useNavigate();
   const getStockVariant = (status: string) => {
     if (status === "In Stock") return "default";
     if (status === "Low Stock") return "secondary";
@@ -27,54 +29,93 @@ export const Product = ({ product }: ProductProps) => {
     return "text-gray-400";
   };
 
-
   return (
-    <div className="group relative flex flex-col border-2  border-gray-200 rounded-2xl p-4   hover:border-blue-50 hover:shadow-2xl transition-all duration-300">
+    <Card className="group relative flex flex-col border-2  border-gray-200 rounded-2xl p-4   hover:border-blue-50 hover:shadow-2xl transition-all duration-300">
       <div className="absolute top-4 right-4 z-10">
-        <Badge variant={getStockVariant(product.availabilityStatus)}>
+        <Badge
+          variant={getStockVariant(product.availabilityStatus)}
+          className="shadow-md font-medium px-3 py-1"
+        >
           <Package className="size-3 mr-1" />
           {product.availabilityStatus}
         </Badge>
       </div>
 
-     
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-40  object-contain transition-transform duration-500 bg-gray-100 rounded-2xl group-hover:scale-110"
-        />
-   
-
-      <h3 className="mt-4 mb-2 font-bold text-lg">
-          {product.name}
-
-      </h3>
-
-      <div className="flex items-center gap-1 mb-2">
-        {[...Array(5)].map((_, index) => (
-          <Star
-            key={index}
-            className={`size-4 ${
-              index < getRatingStars(product.ratingLabel)
-                ? getRatingColor(product.ratingLabel) + " fill-current"
-                : "text-gray-300"
-            }`}
+      <CardHeader className="p-0 cursor-pointer">
+        <div className="relative overflow-hidden from-gray-50 to-white">
+          <img
+            src={product.image}
+            alt={product.name}
+            loading="eager"
+            className="w-full h-40 object-contain p-4 group-hover:scale-110 transition-transform duration-500"
           />
-        ))}
-      </div>
+          <div className="absolute inset-0 from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
+      </CardHeader>
 
-      <p className="text-xl font-semibold mb-2">${product.price.toFixed(2)}</p>
-      <Link to={`/products/${product.id}`}>
-      <Button
-        className="w-full mb-2 bg-[#7faff1] text-white"
-        disabled={product.availabilityStatus === "Out of Stock"}
-        variant={product.availabilityStatus === "Out of Stock" ? "outline" : "default"}
-      >
-        <ShoppingCart className="size-5 mr-2" />
-        {product.availabilityStatus === "Out of Stock" ? "Out of Stock" : "View Details"}
-      </Button>
-       </Link>
+      <CardContent className="flex flex-col flex-1 p-4">
+        <div className="mb-1">
+          <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            {product.category}
+          </span>
+        </div>
 
-    </div>
+        <h3 className="font-bold text-lg line-clamp-2 min-h-14 text-gray-900 group-hover:text-gray-700 transition-colors">
+          {product.name}
+        </h3>
+
+        <div>
+          <div className="flex items-center gap-1 mb-1">
+            {[...Array(5)].map((_, index) => (
+              <Star
+                key={index}
+                className={`size-4 ${
+                  index < getRatingStars(product.ratingLabel)
+                    ? getRatingColor(product.ratingLabel) + " fill-current"
+                    : "text-gray-300"
+                } transition-colors`}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-auto pt-2 border-t border-gray-100">
+          <div className="flex items-end justify-between">
+            <div>
+              <p className="text-sm text-gray-500 mb-1">Price</p>
+              <p className="text-xl font-bold text-gray-900 mb-1">
+                ${product.price.toFixed(2)}
+              </p>
+            </div>
+          </div>
+
+          <Button
+            className="w-full h-12 text-base font-semibold transition-all duration-300 bg-blue-400"
+            disabled={product.availabilityStatus === "Out of Stock"}
+            variant={
+              product.availabilityStatus === "Out of Stock"
+                ? "outline"
+                : "default"
+            }
+          >
+            <ShoppingCart className="size-5 mr-2" />
+            {product.availabilityStatus === "Out of Stock"
+              ? "Out of Stock"
+              : "Add to Cart"}
+          </Button>
+          <Button
+            className="w-full h-12 text-base font-semibold transition-all duration-300 bg-blue-500 mt-3 text-white"
+            onClick={() =>
+              navigate({
+                to: "/products/$productId",
+                params: { productId: product.id },
+              })
+            }
+          >
+            View Details
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
