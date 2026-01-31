@@ -65,6 +65,7 @@ export const Product = ({ product }: ProductProps) => {
           <img
             src={product.image}
             alt={product.name}
+            loading="eager"
             className="w-full h-40 object-contain p-4 group-hover:scale-110 transition-transform duration-500"
           />
           <div className="absolute inset-0 from-black/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

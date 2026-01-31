@@ -10,7 +10,10 @@ export const useDeleteProduct = ({ onSuccess }: { onSuccess: () => void }) => {
   const { mutate, isError, isPending, isSuccess } = useMutation({
     mutationFn: deleteProduct,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [useGetAllProducts.queryKey] });
+      queryClient.invalidateQueries({
+        queryKey: [useGetAllProducts.queryKey],
+        exact: true,
+      });
       onSuccess();
     },
   });
