@@ -11,4 +11,15 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    port: 3000,
+    proxy: {
+      "/admin": {
+        target: "http://localhost:4000",
+        changeOrigin: true,
+        ws: true,
+        rewrite: (path) => path.replace(/^\/admin$/, "/admin/"),
+      },
+    },
+  },
 });
