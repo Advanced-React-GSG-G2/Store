@@ -54,16 +54,16 @@ export const Sidebar = ({
             : "-translate-x-full"
         }`}
       >
-        <div className="flex h-full flex-col gap-4 pt-8">
-          <div className="flex flex-col gap-3">
-            <div className="space-y-3">
+        <div className="flex h-full flex-col gap-4 pt-8 p-2 rounded-lg">
+          <div className="flex flex-col gap-3 ">
+            <div className="space-y-3 mt-7">
               <h2 className="font-bold text-2xl"> Filters</h2>
               <div className="group">
                 <label className="mb-2 block text-sm font-semibold text-gray-700  transition-colors">
                   Category
                 </label>
                 <select
-                  className="h-10 w-full rounded-lg border-2  bg-white px-3 py-2 text-sm transition-all focus:ring-2 focus:ring-purple-200"
+                  className="h-10 w-full rounded-lg border-2 border-gray-300  bg-white px-3 py-2 text-sm transition-all focus:ring-2 focus:ring-blue-00"
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                 >
@@ -81,7 +81,7 @@ export const Sidebar = ({
                   Availability
                 </label>
                 <select
-                  className="h-10 w-full rounded-lg border-2 bg-white px-3 py-2 text-sm transition-all focus:ring-"
+                  className="h-10 w-full rounded-lg border-2 border-gray-300 bg-white px-3 py-2 text-sm transition-all focus:ring-"
                   value={availabilityStatus}
                   onChange={(e) =>
                     setAvailabilityStatus(
@@ -101,7 +101,7 @@ export const Sidebar = ({
                   Rating
                 </label>
                 <select
-                  className="h-10 w-full rounded-lg border-2 bg-white px-3 py-2 text-sm transition-all "
+                  className="h-10 w-full rounded-lg border-2 border-gray-300 bg-white px-3 py-2 text-sm transition-all "
                   value={ratingLabel}
                   onChange={(e) =>
                     setRatingLabel(e.target.value as RatingLabel | "all")
@@ -123,7 +123,7 @@ export const Sidebar = ({
                     type="number"
                     min={0}
                     placeholder="Min"
-                    className="h-10 w-full rounded-lg border-2 border-purple-200 bg-white px-3 py-2 text-sm"
+                    className="h-10 w-full rounded-lg border-2 border-gray-300  bg-white px-3 py-2 text-sm"
                     value={minPrice}
                     onChange={(e) => setMinPrice(e.target.value)}
                   />
@@ -132,14 +132,14 @@ export const Sidebar = ({
                     type="number"
                     min={0}
                     placeholder="Max"
-                    className="h-10 w-full rounded-lg border-2 border-purple-200 bg-white px-3 py-2 text-sm"
+                    className="h-10 w-full rounded-lg border-2 border-gray-300 bg-white px-3 py-2 text-sm"
                     value={maxPrice}
                     onChange={(e) => setMaxPrice(e.target.value)}
                   />
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-2 rounded-lg border-2  transition-all">
+              <div className="flex items-center gap-3 p-2 rounded-lg border-2  border-gray-300 transition-all">
                 <input
                   type="checkbox"
                   id="discounted"
@@ -157,10 +157,10 @@ export const Sidebar = ({
             </div>
           </div>
 
-          <div className="border-t border-purple-200 p-2 from-purple-50 to-pink-50">
+          <div className="border-t border-gray-300 p-2 from-purple-50 to-pink-50">
             <Button
               variant="outline"
-              className="w-full border-2 cursor-pointer hover:scale-105"
+              className="w-full border-2 border-gray-300 cursor-pointer hover:scale-105"
               onClick={onReset}
             >
               Reset Filters

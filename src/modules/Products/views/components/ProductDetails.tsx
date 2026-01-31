@@ -41,7 +41,7 @@ export const ProductDetails = () => {
   const ratingCount = getRatingCount(product.ratingLabel);
 
   return (
-    <div className="max-w-260 mx-auto mt-16 px-6">
+    <div className="max-w-260 mx-auto mt-16 px-6 mb-10">
       <Card className="rounded-[2.5rem] bg-white border border-gray-100 shadow-[0_25px_60px_rgba(144,141,141,0.18)]">
         <CardHeader className="p-8 md:p-10 border-b border-gray-200 space-y-4">
           <CardTitle className="text-4xl font-semibold text-[#527fbe]">

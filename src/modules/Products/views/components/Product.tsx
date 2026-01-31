@@ -3,8 +3,7 @@ import { Card, CardContent, CardHeader } from "../../../../components/ui/card";
 import { Badge } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
 import type { Product as ProductType } from "../../entities/Product";
-import { useDeleteProduct } from "../../hooks/useDeleteProduct";
-import { Outlet, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 
 type ProductProps = {
   product: ProductType;
@@ -29,19 +28,9 @@ export const Product = ({ product }: ProductProps) => {
     if (label === "Good") return "text-amber-300";
     return "text-gray-400";
   };
-  const { deleteProduct, isSuccess } = useDeleteProduct({
-    onSuccess: () => {
-      console.log("Product deleted successfully");
-    },
-  });
-
-  if (isSuccess) {
-    return null;
-  }
 
   return (
-    <Card className="group relative flex flex-col overflow-hidden border-2 border-gray-200 hover:border-gray-400 hover:shadow-2xl transition-all duration-300 bg-white">
-      <Outlet />
+    <Card className="group relative flex flex-col border-2  border-gray-200 rounded-2xl p-4   hover:border-blue-50 hover:shadow-2xl transition-all duration-300">
       <div className="absolute top-4 right-4 z-10">
         <Badge
           variant={getStockVariant(product.availabilityStatus)}
@@ -52,15 +41,7 @@ export const Product = ({ product }: ProductProps) => {
         </Badge>
       </div>
 
-      <CardHeader
-        className="p-0 cursor-pointer"
-        onClick={() =>
-          navigate({
-            to: "/products/$productId",
-            params: { productId: product.id },
-          })
-        }
-      >
+      <CardHeader className="p-0 cursor-pointer">
         <div className="relative overflow-hidden from-gray-50 to-white">
           <img
             src={product.image}
@@ -123,10 +104,15 @@ export const Product = ({ product }: ProductProps) => {
               : "Add to Cart"}
           </Button>
           <Button
-            className="w-full h-12 text-base font-semibold transition-all duration-300 bg-red-400 mt-3 text-white"
-            onClick={() => deleteProduct(product.id)}
+            className="w-full h-12 text-base font-semibold transition-all duration-300 bg-blue-500 mt-3 text-white"
+            onClick={() =>
+              navigate({
+                to: "/products/$productId",
+                params: { productId: product.id },
+              })
+            }
           >
-            Delete
+            View Details
           </Button>
         </div>
       </CardContent>
