@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Turbo
+.turbo/
+# TypeScript build info
+*.tsbuildinfo
+
+repomix.config.json
