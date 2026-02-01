@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "catalog:",
+    "@store/ui": "workspace:*",
     "@tailwindcss/vite": "catalog:",
     "@tanstack/react-query": "catalog:",
     "@tanstack/react-query-devtools": "catalog:",
